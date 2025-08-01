@@ -1,1 +1,2 @@
-# sp500
+# SP500 Data Project
+The aim of the project is to extract and load data from all 500(503) and load them into a database for faster and easier extraction. After that, we can use the data to build an optimized portfolio and compare it to the S&P 500 index
