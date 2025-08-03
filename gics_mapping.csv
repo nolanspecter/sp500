@@ -1,0 +1,165 @@
+﻿sector_id,sector,industry_id,industry,sub_industry_id,sub_industry
+1,Energy,101,Energy Equipment & Services,10101,Oil & Gas Drilling
+1,Energy,101,Energy Equipment & Services,10102,Oil & Gas Equipment & Services
+1,Energy,102,"Oil, Gas & Consumable Fuels",10201,Integrated Oil & Gas
+1,Energy,102,"Oil, Gas & Consumable Fuels",10202,Oil & Gas Exploration & Production
+1,Energy,102,"Oil, Gas & Consumable Fuels",10203,Oil & Gas Refining & Marketing
+1,Energy,102,"Oil, Gas & Consumable Fuels",10204,Oil & Gas Storage & Transportation
+1,Energy,102,"Oil, Gas & Consumable Fuels",10205,Coal & Consumable Fuels
+2,Materials,201,Chemicals,20101,Commodity Chemicals
+2,Materials,201,Chemicals,20102,Diversified Chemicals
+2,Materials,201,Chemicals,20103,Fertilizers & Agricultural Chemicals
+2,Materials,201,Chemicals,20104,Industrial Gases
+2,Materials,201,Chemicals,20105,Specialty Chemicals
+2,Materials,202,Construction Materials,20201,Construction Materials
+2,Materials,203,Containers & Packaging,20301,"Metal, Glass & Plastic Containers  "
+2,Materials,203,Containers & Packaging,20302,Paper & Plastic Packaging Products & Materials 
+2,Materials,204,Metals & Mining,20401,Aluminum
+2,Materials,204,Metals & Mining,20402,Diversified Metals & Mining
+2,Materials,204,Metals & Mining,20403,Copper
+2,Materials,204,Metals & Mining,20404,Gold
+2,Materials,204,Metals & Mining,20405,Precious Metals & Minerals
+2,Materials,204,Metals & Mining,20406,Silver
+2,Materials,204,Metals & Mining,20407,Steel
+2,Materials,205,Paper & Forest Products,20501,Forest Products
+2,Materials,205,Paper & Forest Products,20502,Paper Products
+3,Industrials,301,Aerospace & Defense,30101,Aerospace & Defense
+3,Industrials,302,Building Products,30201,Building Products
+3,Industrials,303,Construction & Engineering,30301,Construction & Engineering
+3,Industrials,304,Electrical Equipment,30401,Electrical Components & Equipment
+3,Industrials,304,Electrical Equipment,30402,Heavy Electrical Equipment
+3,Industrials,305,Industrial Conglomerates,30501,Industrial Conglomerates
+3,Industrials,306,Machinery,30601,Construction Machinery & Heavy Transportation Equipment 
+3,Industrials,306,Machinery,30602,Agricultural & Farm Machinery
+3,Industrials,306,Machinery,30603,Industrial Machinery & Supplies & Components 
+3,Industrials,307,Trading Companies & Distributors,30701,Trading Companies & Distributors
+3,Industrials,308,Commercial Services & Supplies,30801,Commercial Printing
+3,Industrials,308,Commercial Services & Supplies,30802,Environmental & Facilities Services
+3,Industrials,308,Commercial Services & Supplies,30803,Office Services & Supplies
+3,Industrials,308,Commercial Services & Supplies,30804,Diversified Support Services
+3,Industrials,308,Commercial Services & Supplies,30805,Security & Alarm Services
+3,Industrials,309,Professional Services,30901,Human Resource & Employment Services 
+3,Industrials,309,Professional Services,30902,Research & Consulting Services
+3,Industrials,309,Professional Services,30903,Data Processing & Outsourced Services 
+3,Industrials,310,Air Freight & Logistics,31001,Air Freight & Logistics
+3,Industrials,311,Passenger Airlines ,31101,Passenger Airlines 
+3,Industrials,312,Marine Transportation ,31201,Marine Transportation 
+3,Industrials,313,Ground Transportation ,31301,Rail Transportation 
+3,Industrials,313,Ground Transportation ,31302,Cargo Ground Transportation 
+3,Industrials,313,Ground Transportation ,31303,Passenger Ground Transportation 
+3,Industrials,314,Transportation Infrastructure,31401,Airport Services
+3,Industrials,314,Transportation Infrastructure,31402,Highways & Railtracks
+3,Industrials,314,Transportation Infrastructure,31403,Marine Ports & Services
+4,Utilities,401,Electric Utilities,40101,Electric Utilities
+4,Utilities,402,Gas Utilities,40201,Gas Utilities
+4,Utilities,403,Multi-Utilities,40301,Multi-Utilities
+4,Utilities,404,Water Utilities,40401,Water Utilities
+4,Utilities,405,Independent Power and Renewable Electricity Producers,40501,Independent Power Producers & Energy Traders
+4,Utilities,405,Independent Power and Renewable Electricity Producers,40502,Renewable Electricity 
+5,Health Care,501,Health Care Equipment & Supplies,50101,Health Care Equipment
+5,Health Care,501,Health Care Equipment & Supplies,50102,Health Care Supplies
+5,Health Care,502,Health Care Providers & Services,50201,Health Care Distributors
+5,Health Care,502,Health Care Providers & Services,50202,Health Care Services
+5,Health Care,502,Health Care Providers & Services,50203,Health Care Facilities
+5,Health Care,502,Health Care Providers & Services,50204,Managed Health Care
+5,Health Care,503,Health Care Technology,50301,Health Care Technology
+5,Health Care,504,Biotechnology,50401,Biotechnology
+5,Health Care,505,Pharmaceuticals,50501,Pharmaceuticals
+5,Health Care,506,Life Sciences Tools & Services,50601,Life Sciences Tools & Services
+6,Financials,601,Banks,60101,Diversified Banks
+6,Financials,601,Banks,60102,Regional Banks
+6,Financials,602, Financial Services ,60201,Diversified Financial Services 
+6,Financials,602, Financial Services ,60202,Multi-Sector Holdings
+6,Financials,602, Financial Services ,60203,Specialized Finance
+6,Financials,602, Financial Services ,60204,Commercial & Residential Mortgage Finance 
+6,Financials,602, Financial Services ,60205,Transaction & Payment Processing Services 
+6,Financials,603,Consumer Finance,60301,Consumer Finance
+6,Financials,604,Capital Markets,60401,Asset Management & Custody Banks
+6,Financials,604,Capital Markets,60402,Investment Banking & Brokerage
+6,Financials,604,Capital Markets,60403,Diversified Capital Markets
+6,Financials,604,Capital Markets,60404,Financial Exchanges & Data
+6,Financials,605,"Mortgage Real Estate Investment
+Trusts (REITs",60501,Mortgage REITs
+6,Financials,606,Insurance,60601,Insurance Brokers
+6,Financials,606,Insurance,60602,Life & Health Insurance
+6,Financials,606,Insurance,60603,Multi-line Insurance
+6,Financials,606,Insurance,60604,Property & Casualty Insurance
+6,Financials,606,Insurance,60605,Reinsurance
+7,Consumer Discretionary,701,Automobile Components ,70101,Automotive Parts & Equipment 
+7,Consumer Discretionary,701,Automobile Components ,70102,Tires & Rubber
+7,Consumer Discretionary,702,Automobiles,70201,Automobile Manufacturers
+7,Consumer Discretionary,702,Automobiles,70202,Motorcycle Manufacturers
+7,Consumer Discretionary,703,Household Durables,70301,Consumer Electronics
+7,Consumer Discretionary,703,Household Durables,70302,Home Furnishings
+7,Consumer Discretionary,703,Household Durables,70303,Homebuilding
+7,Consumer Discretionary,703,Household Durables,70304,Household Appliances
+7,Consumer Discretionary,703,Household Durables,70305,Housewares & Specialties
+7,Consumer Discretionary,704,Leisure Products,70401,Leisure Products
+7,Consumer Discretionary,705,"Textiles, Apparel & Luxury Goods",70501,"Apparel, Accessories & Luxury Goods"
+7,Consumer Discretionary,705,"Textiles, Apparel & Luxury Goods",70502,Footwear
+7,Consumer Discretionary,705,"Textiles, Apparel & Luxury Goods",70503,Textiles
+7,Consumer Discretionary,706,"Hotels, Restaurants & Leisure",70601,Casinos & Gaming
+7,Consumer Discretionary,706,"Hotels, Restaurants & Leisure",70602,"Hotels, Resorts & Cruise Lines"
+7,Consumer Discretionary,706,"Hotels, Restaurants & Leisure",70603,Leisure Facilities
+7,Consumer Discretionary,706,"Hotels, Restaurants & Leisure",70604,Restaurants
+7,Consumer Discretionary,707,Diversified Consumer Services,70701,Education Services
+7,Consumer Discretionary,707,Diversified Consumer Services,70702,Specialized Consumer Services
+7,Consumer Discretionary,708,Distributors,70801,Distributors
+7,Consumer Discretionary,708,Distributors,70802,Broadline Retail 
+7,Consumer Discretionary,709,Specialty Retail,70901,Apparel Retail
+7,Consumer Discretionary,709,Specialty Retail,70902,Computer & Electronics Retail
+7,Consumer Discretionary,709,Specialty Retail,70903,Home Improvement Retail
+7,Consumer Discretionary,709,Specialty Retail,70904,Other Specialty Retail 
+7,Consumer Discretionary,709,Specialty Retail,70905,Automotive Retail
+7,Consumer Discretionary,709,Specialty Retail,70906,Homefurnishing Retail
+8,Consumer Staples,801,Consumer Staples Distribution & Retail ,80101,Drug Retail
+8,Consumer Staples,801,Consumer Staples Distribution & Retail ,80102,Food Distributors
+8,Consumer Staples,801,Consumer Staples Distribution & Retail ,80103,Food Retail
+8,Consumer Staples,801,Consumer Staples Distribution & Retail ,80104,Consumer Staples Merchandise Retail
+8,Consumer Staples,802,Beverages,80201,Brewers
+8,Consumer Staples,802,Beverages,80202,Distillers & Vintners
+8,Consumer Staples,802,Beverages,80203,Soft Drinks & Non-alcoholic Beverages 
+8,Consumer Staples,803,Food Products,80301,Agricultural Products & Services 
+8,Consumer Staples,803,Food Products,80302,Packaged Foods & Meats
+8,Consumer Staples,804,Tobacco,80401,Tobacco
+8,Consumer Staples,805,Household Products,80501,Household Products
+8,Consumer Staples,806,Personal Care Products ,80601,Personal Care Products 
+9,Information Technology,901,IT Services,90101,IT Consulting & Other Services
+9,Information Technology,901,IT Services,90102,Internet Services & Infrastructure
+9,Information Technology,902,Software,90201,Application Software
+9,Information Technology,902,Software,90202,Systems Software
+9,Information Technology,903,Communications Equipment,90301,Communications Equipment
+9,Information Technology,904,"Technology Hardware, Storage & Peripherals",90401,"Technology Hardware, Storage & Peripherals"
+9,Information Technology,905,"Electronic Equipment, Instruments & Components",90501,Electronic Equipment & Instruments 
+9,Information Technology,905,"Electronic Equipment, Instruments & Components",90502,Electronic Components
+9,Information Technology,905,"Electronic Equipment, Instruments & Components",90503,Electronic Manufacturing Services
+9,Information Technology,905,"Electronic Equipment, Instruments & Components",90504,Technology Distributors
+9,Information Technology,906,Semiconductors & Semiconductor Equipment,90601,Semiconductor Materials & Equipment 
+9,Information Technology,906,Semiconductors & Semiconductor Equipment,90602,Semiconductors
+10,Communication Services,1001,Diversified Telecommunication Services,100101,Alternative Carriers
+10,Communication Services,1001,Diversified Telecommunication Services,100102,Integrated Telecommunication Services
+10,Communication Services,1002,Wireless Telecommunication Services,100201,Wireless Telecommunication Services
+10,Communication Services,1003,Media,100301,Advertising
+10,Communication Services,1003,Media,100302,Broadcasting
+10,Communication Services,1003,Media,100303,Cable & Satellite
+10,Communication Services,1003,Media,100304,Publishing
+10,Communication Services,1004,Entertainment,100401,Movies & Entertainment
+10,Communication Services,1004,Entertainment,100402,Interactive Home Entertainment
+10,Communication Services,1005,Interactive Media & Services,100501,Interactive Media & Services
+11,Real Estate,1101,Diversified REITs,110101,Diversified REITs
+11,Real Estate,1102,Industrial REITs,110201,Industrial REITs
+11,Real Estate,1103,Hotel & Resort REITs,110301,Hotel & Resort REITs
+11,Real Estate,1104,Office REITs,110401,Office REITs
+11,Real Estate,1105,Health Care REITs,110501,Health Care REITs
+11,Real Estate,1106,Residential REITs,110601,Multi-Family Residential REITs
+11,Real Estate,1106,Residential REITs,110602,Single-Family Residential REITs
+11,Real Estate,1107,Retail REITs,110701,Retail REITs
+11,Real Estate,1108,Specialized REITs,110801,Other Specialized REITs
+11,Real Estate,1108,Specialized REITs,110802,Self-Storage REITs
+11,Real Estate,1108,Specialized REITs,110803,Telecom Tower REITs
+11,Real Estate,1108,Specialized REITs,110804,Timber REITs
+11,Real Estate,1108,Specialized REITs,110805,Data Center REITs
+11,Real Estate,1109,Real Estate Management & Development ,110901,Diversified Real Estate Activities 
+11,Real Estate,1109,Real Estate Management & Development ,110902,Real Estate Operating Companies 
+11,Real Estate,1109,Real Estate Management & Development ,110903,Real Estate Development 
+11,Real Estate,1109,Real Estate Management & Development ,110904,Real Estate Services 
