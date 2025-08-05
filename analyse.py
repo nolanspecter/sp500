@@ -5,6 +5,7 @@ import sqlite3
 
 selected_tickers = []
 ticker_vars = {}
+allocation_vars = {}
 
 def submit_selection():
     global selected_tickers
@@ -12,6 +13,7 @@ def submit_selection():
     if selected_tickers:
         messagebox.showinfo("Selected", f"You selected {len(selected_tickers)} tickers.")
         root.destroy()
+        open_allocation_window()
     else:
         messagebox.showwarning("No Selection", "Please select at least one ticker.")
 
@@ -27,6 +29,36 @@ def update_checkboxes(*args):
         if ticker not in ticker_vars:
             ticker_vars[ticker] = tk.BooleanVar()
         tk.Checkbutton(checkbox_frame, text=ticker, variable=ticker_vars[ticker]).pack(anchor='w')
+
+def open_allocation_window():
+    allocation_win = tk.Tk()
+    allocation_win.title("Set Allocation Percentages")
+
+    tk.Label(allocation_win, text="Assign allocation percentages to each ticker (total must not exceed 100%)").pack(pady=(10, 5))
+
+    frame = tk.Frame(allocation_win)
+    frame.pack(padx=10, pady=10)
+
+    for ticker in selected_tickers:
+        tk.Label(frame, text=ticker).grid(row=selected_tickers.index(ticker), column=0, sticky="w", padx=5, pady=2)
+        var = tk.DoubleVar()
+        entry = tk.Entry(frame, textvariable=var, width=10)
+        entry.grid(row=selected_tickers.index(ticker), column=1, padx=5, pady=2)
+        allocation_vars[ticker] = var
+
+    def submit_allocations():
+        allocations = {ticker: var.get() for ticker, var in allocation_vars.items()}
+        total = sum(allocations.values())
+        if total > 100:
+            messagebox.showerror("Error", f"Total allocation exceeds 100% (currently {total:.2f}%).")
+        else:
+            allocation_win.destroy()
+            print("Allocations submitted:")
+            print(allocations)
+
+    tk.Button(allocation_win, text="Submit Allocations", command=submit_allocations).pack(pady=10)
+
+    allocation_win.mainloop()
 
 # Get tickers
 tickers = sp_comp_tickers = pd.read_html(
