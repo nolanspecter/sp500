@@ -1,19 +1,26 @@
 import tkinter as tk
 from tkinter import messagebox
+from tkcalendar import DateEntry 
 import pandas as pd
 import sqlite3
 
 selected_tickers = []
 ticker_vars = {}
 allocation_vars = {}
+allocation = {}
+START = ""
+END = ""
 
 def submit_selection():
     global selected_tickers
+    global allocation
+    global START
+    global END
     selected_tickers = [ticker for ticker, var in ticker_vars.items() if var.get()]
     if selected_tickers:
-        messagebox.showinfo("Selected", f"You selected {len(selected_tickers)} tickers.")
+        messagebox.showinfo("Selected", f"You selected {selected_tickers}")
         root.destroy()
-        open_allocation_window()
+        allocation, START, END = allocation_window(selected_tickers)
     else:
         messagebox.showwarning("No Selection", "Please select at least one ticker.")
 
@@ -30,35 +37,97 @@ def update_checkboxes(*args):
             ticker_vars[ticker] = tk.BooleanVar()
         tk.Checkbutton(checkbox_frame, text=ticker, variable=ticker_vars[ticker]).pack(anchor='w')
 
-def open_allocation_window():
-    allocation_win = tk.Tk()
-    allocation_win.title("Set Allocation Percentages")
+def allocation_window(tickers):
+    """
+    Opens a Tkinter window to let the user input allocation percentages
+    for a given list of tickers (max total 100%), and select start/end dates.
+    Returns: (allocations_dict, start_date, end_date)
+    """
+    allocations = {}
+    allocation_root = tk.Tk()
+    allocation_root.title("Portfolio Allocation & Time Period")
 
-    tk.Label(allocation_win, text="Assign allocation percentages to each ticker (total must not exceed 100%)").pack(pady=(10, 5))
+    tk.Label(
+        allocation_root,
+        text="Enter allocation % for each asset (total must not exceed 100%)",
+        font=("Arial", 12)
+    ).pack(pady=10)
 
-    frame = tk.Frame(allocation_win)
+    frame = tk.Frame(allocation_root)
     frame.pack(padx=10, pady=10)
 
-    for ticker in selected_tickers:
-        tk.Label(frame, text=ticker).grid(row=selected_tickers.index(ticker), column=0, sticky="w", padx=5, pady=2)
-        var = tk.DoubleVar()
-        entry = tk.Entry(frame, textvariable=var, width=10)
-        entry.grid(row=selected_tickers.index(ticker), column=1, padx=5, pady=2)
-        allocation_vars[ticker] = var
+    allocation_vars = {}
+    last_changed_var = tk.DoubleVar()  # track last modified
 
-    def submit_allocations():
-        allocations = {ticker: var.get() for ticker, var in allocation_vars.items()}
-        total = sum(allocations.values())
+    def validate_total():
+        total = sum(var.get() for var in allocation_vars.values())
         if total > 100:
-            messagebox.showerror("Error", f"Total allocation exceeds 100% (currently {total:.2f}%).")
+            messagebox.showerror(
+                "Allocation Error",
+                f"Total allocation exceeds 100% (currently {total:.2f}%)."
+            )
+            last_changed_var.set(0.0)
+        elif total < 100:
+            remaining_label.config(text=f"Remaining: {100 - total:.2f}%")
         else:
-            allocation_win.destroy()
-            print("Allocations submitted:")
-            print(allocations)
+            remaining_label.config(text="✅ Total = 100%")
 
-    tk.Button(allocation_win, text="Submit Allocations", command=submit_allocations).pack(pady=10)
+    def make_callback(var):
+        def callback(*args):
+            nonlocal last_changed_var
+            last_changed_var = var
+            validate_total()
+        return callback
 
-    allocation_win.mainloop()
+    for i, ticker in enumerate(tickers):
+        tk.Label(frame, text=ticker, width=10, anchor="w").grid(row=i, column=0, padx=5, pady=3)
+        var = tk.DoubleVar()
+        allocation_vars[ticker] = var
+        var.trace_add("write", make_callback(var))
+        tk.Entry(frame, textvariable=var, width=10).grid(row=i, column=1, padx=5, pady=3)
+
+    remaining_label = tk.Label(allocation_root, text="Remaining: 100.00%", font=("Arial", 10, "italic"))
+    remaining_label.pack(pady=5)
+
+    # Date selection
+    date_frame = tk.Frame(allocation_root)
+    date_frame.pack(pady=10)
+
+    tk.Label(date_frame, text="Start Date:").grid(row=0, column=0, padx=5)
+    start_var = tk.StringVar()
+    start_date = DateEntry(date_frame, textvariable=start_var, width=12, background='darkblue',
+                           foreground='white', borderwidth=2, date_pattern='yyyy-mm-dd')
+    start_date.grid(row=0, column=1, padx=5)
+
+    tk.Label(date_frame, text="End Date:").grid(row=0, column=2, padx=5)
+    end_var = tk.StringVar()
+    end_date = DateEntry(date_frame, textvariable=end_var, width=12, background='darkblue',
+                         foreground='white', borderwidth=2, date_pattern='yyyy-mm-dd')
+    end_date.grid(row=0, column=3, padx=5)
+
+    def submit():
+        total = sum(v.get() for v in allocation_vars.values())
+        if total != 100:
+            messagebox.showerror(
+                "Invalid Allocation",
+                f"Total allocation must equal 100% (currently {total:.2f}%)."
+            )
+            return
+        nonlocal allocations
+        allocations = {ticker: var.get() for ticker, var in allocation_vars.items()}
+
+        if not start_var.get() or not end_var.get():
+            messagebox.showerror("Date Error", "Please select both start and end dates.")
+            return
+
+        allocation_root.destroy()
+
+    tk.Button(allocation_root, text="Submit", command=submit).pack(pady=10)
+
+    allocation_root.mainloop()
+
+    return allocations, start_var.get(), end_var.get()
+
 
 # Get tickers
 tickers = sp_comp_tickers = pd.read_html(
@@ -96,17 +165,23 @@ tk.Button(root, text="Submit", command=submit_selection).pack(pady=10)
 root.mainloop()
 
 # After GUI closes
-print("Selected tickers:", selected_tickers)
-
+print(f"Getting data for {selected_tickers} from {START} to {END} with allocation {allocation}")
 # Query
 query = f"""
     SELECT * 
     FROM price
     WHERE ticker IN {tuple(selected_tickers)}
+    AND date BETWEEN '{START}' AND '{END}'
 """
 conn = sqlite3.connect('sp500_stocks.db')
 cursor = conn.cursor()
 cursor.execute(query)
 results = cursor.fetchall()
+total = 0
 results_df = pd.DataFrame(results, columns=['Ticker', 'Date', 'Close', 'High', 'Low', 'Open', 'Volume'])
-print(results_df.head())
+print(results_df)
+# for ticker in selected_tickers:
+#     ticker_df = results_df[results_df['Ticker'] == ticker]
+#     ticker_df.loc[:,'Value'] = (1+ticker_df.loc[:,'Close'].pct_change()) * (allocation[ticker]/100 * 1000)
+#     total += ticker_df.iloc[-1,:]['Value']
+# print(total)
