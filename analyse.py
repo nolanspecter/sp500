@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from tkcalendar import DateEntry 
 import pandas as pd
+import matplotlib.pyplot as plt
 import sqlite3
 
 selected_tickers = []
@@ -167,21 +168,34 @@ root.mainloop()
 # After GUI closes
 print(f"Getting data for {selected_tickers} from {START} to {END} with allocation {allocation}")
 # Query
-query = f"""
-    SELECT * 
-    FROM price
-    WHERE ticker IN {tuple(selected_tickers)}
-    AND date BETWEEN '{START}' AND '{END}'
-"""
+if len(selected_tickers) > 1:
+    query = f"""
+        SELECT date, ticker, close 
+        FROM price
+        WHERE ticker IN {tuple(selected_tickers)}
+        AND date BETWEEN '{START}' AND '{END}'
+    """
+else:
+    query = f"""
+        SELECT date, ticker, close 
+        FROM price
+        WHERE ticker = '{selected_tickers[0]}'
+        AND date BETWEEN '{START}' AND '{END}'
+    """
 conn = sqlite3.connect('sp500_stocks.db')
 cursor = conn.cursor()
 cursor.execute(query)
 results = cursor.fetchall()
-total = 0
-results_df = pd.DataFrame(results, columns=['Ticker', 'Date', 'Close', 'High', 'Low', 'Open', 'Volume'])
-print(results_df)
-# for ticker in selected_tickers:
-#     ticker_df = results_df[results_df['Ticker'] == ticker]
-#     ticker_df.loc[:,'Value'] = (1+ticker_df.loc[:,'Close'].pct_change()) * (allocation[ticker]/100 * 1000)
-#     total += ticker_df.iloc[-1,:]['Value']
-# print(total)
+ind_ticker_df =[]
+results_df = pd.DataFrame(results, columns=['Date', 'Ticker', 'Close'])
+results_df['Date'] = pd.to_datetime(results_df['Date']).dt.date
+pivot_df = results_df.pivot(index='Date', columns='Ticker', values='Close')
+pivot_df['Value'] = 0
+for i in range(len(selected_tickers)):
+    pivot_df['Value'] += (1 + pivot_df.iloc[:,i].pct_change()).cumprod() * (1000 * list(allocation.values())[i] /100)
+# Calculate cumulative returns and apply allocation
+pivot_df['Value'].plot(title='Portfolio Value Over Time', figsize=(12, 6))
+plt.xlabel('Date')
+plt.ylabel('Portfolio Value ($)')
+plt.xticks(rotation=90)
+plt.show()
