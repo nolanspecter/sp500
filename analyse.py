@@ -4,6 +4,7 @@ from tkcalendar import DateEntry
 import pandas as pd
 import matplotlib.pyplot as plt
 import sqlite3
+import yfinance as yf
 
 selected_tickers = []
 ticker_vars = {}
@@ -193,8 +194,12 @@ pivot_df = results_df.pivot(index='Date', columns='Ticker', values='Close')
 pivot_df['Value'] = 0
 for i in range(len(selected_tickers)):
     pivot_df['Value'] += (1 + pivot_df.iloc[:,i].pct_change()).cumprod() * (1000 * list(allocation.values())[i] /100)
+
 # Calculate cumulative returns and apply allocation
-pivot_df['Value'].plot(title='Portfolio Value Over Time', figsize=(12, 6))
+sp = yf.download('^GSPC', start=START, end=END, auto_adjust=True)['Close']
+sp_value = 1000 * (1 + sp.pct_change()).cumprod()
+ax = pivot_df['Value'].plot(title='Portfolio Value Over Time', figsize=(12, 6), label='Portfolio Value', legend=True)
+sp_value.plot(ax=ax, label='S&P 500', color='orange')
 plt.xlabel('Date')
 plt.ylabel('Portfolio Value ($)')
 plt.xticks(rotation=90)
