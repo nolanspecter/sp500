@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import messagebox
 from tkcalendar import DateEntry
 import pandas as pd
+import sqlite3
+from pypfopt import expected_returns, risk_models, EfficientFrontier
 
 def ticker_selection_window(tickers):
     selected_tickers = []
@@ -129,3 +131,59 @@ def allocation_window(tickers):
 
     return allocations, start_var.get(), end_var.get()
 
+def get_price(selected_tickers, end, start, allocation, mpt_weights):
+    if len(selected_tickers) > 1:
+        query = f"""
+            SELECT date, ticker, close 
+            FROM price
+            WHERE ticker IN {tuple(selected_tickers)}
+            AND date BETWEEN '{start}' AND '{end}'
+        """
+    else:
+        query = f"""
+            SELECT date, ticker, close 
+            FROM price
+            WHERE ticker = '{selected_tickers[0]}'
+            AND date BETWEEN '{start}' AND '{end}'
+        """
+    conn = sqlite3.connect('sp500_stocks.db')
+    cursor = conn.cursor()
+    cursor.execute(query)
+    results = cursor.fetchall()
+    conn.close()
+
+    results_df = pd.DataFrame(results, columns=['Date', 'Ticker', 'Close'])
+    results_df['Date'] = pd.to_datetime(results_df['Date']).dt.date
+    pivot_df = results_df.pivot(index='Date', columns='Ticker', values='Close')
+    pivot_df['Value'] = 0
+    for i in range(len(selected_tickers)):
+        pivot_df['Value'] += (1 + pivot_df.iloc[:,i].pct_change()).cumprod() * (1000 * list(allocation.values())[i] /100)
+    
+    pivot_df['MPT Value'] = 0
+    for ticker in mpt_weights.keys():
+        pivot_df['MPT Value'] += (1 + pivot_df.loc[:,ticker].pct_change()).cumprod() * (1000 * mpt_weights[ticker])
+    return pivot_df
+def get_mpt_allocation(selected_tickers, start):
+    query = f"""
+    SELECT date, ticker, close
+    FROM price
+    WHERE date BETWEEN '{start - pd.DateOffset(years=5)}' AND '{start - pd.DateOffset(days=1)}'
+    AND ticker IN {tuple(selected_tickers)}
+    """
+    conn = sqlite3.connect('sp500_stocks.db')
+    cursor = conn.cursor()
+    cursor.execute(query)
+    results = cursor.fetchall()
+    conn.close()
+
+    mpt_df = pd.DataFrame(results, columns=['Date', 'Ticker', 'Close'])
+    mpt_df['Date'] = pd.to_datetime(mpt_df['Date']).dt.date
+    mpt_pivot = mpt_df.pivot(index='Date', columns='Ticker', values='Close')
+
+    # Calculate daily returns and covariance matrix
+    returns = expected_returns.mean_historical_return(mpt_pivot)
+    cov = risk_models.sample_cov(mpt_pivot)
+    ef = EfficientFrontier(returns, cov)
+    mpt_weights = ef.max_sharpe(risk_free_rate=0.04)
+    print("Optimal Weights:", mpt_weights)
+    return mpt_weights
