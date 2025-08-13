@@ -10,6 +10,8 @@ from misc import ticker_selection_window, allocation_window, get_price, get_mpt_
 tickers = sp_comp_tickers = pd.read_html(
     'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')[0]['Symbol'].to_list()
 
+tickers = [ticker.replace(".", "-") for ticker in ticker]
+
 # Get user input
 selected_tickers = ticker_selection_window(tickers)
 allocation, start, end = allocation_window(selected_tickers)
