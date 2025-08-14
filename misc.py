@@ -17,6 +17,15 @@ def ticker_selection_window(tickers):
     tk.Label(root, text="Search Ticker:").pack(pady=(10, 0))
     tk.Entry(root, textvariable=search_var).pack(fill="x", padx=10)
 
+    select_all_var = tk.BooleanVar()
+
+    def toggle_select_all():
+        for var in ticker_vars.values():
+            var.set(select_all_var.get())
+
+    tk.Checkbutton(root, text="Select All", variable=select_all_var,
+                   command=toggle_select_all).pack(anchor="w", padx=10, pady=(5, 0))
+
     canvas = tk.Canvas(root, height=400)
     scroll_y = tk.Scrollbar(root, orient="vertical", command=canvas.yview)
     checkbox_frame = tk.Frame(canvas)
@@ -65,6 +74,17 @@ def allocation_window(tickers):
     frame = tk.Frame(allocation_root)
     frame.pack(padx=10, pady=10)
 
+    canvas = tk.Canvas(allocation_root, height=300)  # Limit height for scrolling
+    scroll_y = tk.Scrollbar(allocation_root, orient="vertical", command=canvas.yview)
+    frame = tk.Frame(canvas)
+
+    canvas_frame = canvas.create_window((0, 0), window=frame, anchor='nw')
+    canvas.configure(yscrollcommand=scroll_y.set)
+    frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+
+    canvas.pack(side="left", fill="both", expand=True, padx=10)
+    scroll_y.pack(side="right", fill="y")
+    
     allocation_vars = {}
     last_changed_var = tk.DoubleVar()
 
@@ -98,6 +118,7 @@ def allocation_window(tickers):
 
     date_frame = tk.Frame(allocation_root)
     date_frame.pack(pady=10)
+
 
     tk.Label(date_frame, text="Start Date:").grid(row=0, column=0, padx=5)
     start_var = tk.StringVar()
