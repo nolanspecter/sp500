@@ -180,6 +180,7 @@ def get_price(selected_tickers, end, start, allocation, mpt_weights):
     results_df = pd.DataFrame(results, columns=['Date', 'Ticker', 'Close'])
     results_df['Date'] = pd.to_datetime(results_df['Date']).dt.date
     pivot_df = results_df.pivot(index='Date', columns='Ticker', values='Close')
+    pivot_df = pivot_df.fillna(method="bfill")
     pivot_df['Value'] = 0
     for i in range(len(selected_tickers)):
         pivot_df['Value'] += (1 + pivot_df.iloc[:,i].pct_change()).cumprod() * (1000 * list(allocation.values())[i] /100)
@@ -204,6 +205,7 @@ def get_mpt_allocation(selected_tickers, start):
     mpt_df = pd.DataFrame(results, columns=['Date', 'Ticker', 'Close'])
     mpt_df['Date'] = pd.to_datetime(mpt_df['Date']).dt.date
     mpt_pivot = mpt_df.pivot(index='Date', columns='Ticker', values='Close')
+    mpt_pivot = mpt_pivot.fillna(method="bfill")
 
     # Calculate daily returns and covariance matrix
     returns = expected_returns.mean_historical_return(mpt_pivot)
