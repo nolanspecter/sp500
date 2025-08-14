@@ -84,7 +84,7 @@ def allocation_window(tickers):
 
     canvas.pack(side="left", fill="both", expand=True, padx=10)
     scroll_y.pack(side="right", fill="y")
-    
+
     allocation_vars = {}
     last_changed_var = tk.DoubleVar()
 
@@ -106,9 +106,13 @@ def allocation_window(tickers):
             validate_total()
         return callback
 
+    base_alloc = 100 / len(tickers)
+    allocations_list = [base_alloc] * len(tickers)
+    allocations_list[-1] = 100 - sum(allocations_list[:-1])
+
     for i, ticker in enumerate(tickers):
         tk.Label(frame, text=ticker, width=10, anchor="w").grid(row=i, column=0, padx=5, pady=3)
-        var = tk.DoubleVar()
+        var = tk.DoubleVar(value=allocations_list[i])
         allocation_vars[ticker] = var
         var.trace_add("write", make_callback(var))
         tk.Entry(frame, textvariable=var, width=10).grid(row=i, column=1, padx=5, pady=3)
@@ -206,5 +210,4 @@ def get_mpt_allocation(selected_tickers, start):
     cov = risk_models.sample_cov(mpt_pivot)
     ef = EfficientFrontier(returns, cov)
     mpt_weights = ef.max_sharpe(risk_free_rate=0.04)
-    print("Optimal Weights:", mpt_weights)
     return mpt_weights
